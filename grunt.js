@@ -57,6 +57,9 @@ module.exports = function(grunt) {
         dest: 'lib'
       }
     },
+    coffeelint: {
+      app: ['*.coffee']
+    },
     uglify: {}
   });
 
