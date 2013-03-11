@@ -1,13 +1,19 @@
 {
   "name": "NextRealityEngine",
-  "version": "0.1.0",
-  "main": "./main.js",
+  "repo": "ungerik/NextRealityEngine",
+  "description": "A WebGL 3D engine",
+  "version": "0.0.1",
+  "keywords": ["WebGL", "3D"],
   "dependencies": {
     "angular": "~1.0.5",
     "bootstrap": "~2.3.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/ungerik/NextRealityEngine.git"
-  }
+  "development": {},
+  "license": "MIT",
+  "scripts": [
+    "index.js",
+  ],
+  "styles": [
+    "NextRealityEngine.css"
+  ]
 }

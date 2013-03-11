@@ -10,3 +10,14 @@ Tech Stack
 * [grunt](http://gruntjs.com/)
 * [component](https://github.com/component/component)
 * [bower](http://twitter.github.com/bower/)
+
+Installation
+------------
+
+	$ component install ungerik/NextRealityEngine
+
+
+License
+-------
+
+	MIT
