@@ -1,0 +1,13 @@
+{
+  "name": "NextRealityEngine",
+  "version": "0.1.0",
+  "main": "./main.js",
+  "dependencies": {
+    "angular": "~1.0.5",
+    "bootstrap": "~2.3.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ungerik/NextRealityEngine.git"
+  }
+}
