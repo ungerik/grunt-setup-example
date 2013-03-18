@@ -81,6 +81,9 @@ module.exports = function(grunt) {
       app: ['src/**/*.coffee']
     },
     uglify: {
+      options: {
+        mangle: false
+      },
       my_target: {
         files: {
           'nxr.min.js': ['nxr.js']
