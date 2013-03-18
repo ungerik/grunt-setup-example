@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    // pkg: '<json:package.json>',
+    pkg: '<json:package.json>',
     meta: {
       banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
         '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -11,12 +11,12 @@ module.exports = function(grunt) {
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
         ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
     },
-    lint: {
-      files: ['Gruntfile.js', 'lib/**/*.js', 'test/**/*.js']
-    },
-    qunit: {
-      files: ['test/**/*.html']
-    },
+    // lint: {
+    //   files: ['Gruntfile.js', 'lib/**/*.js', 'test/**/*.js']
+    // },
+    // qunit: {
+    //   files: ['test/**/*.html']
+    // },
     // concat: {
     //   dist: {
     //     src: ['<banner:meta.banner>', '<file_strip_banner:lib/<%= pkg.name %>.js>'],
@@ -72,19 +72,24 @@ module.exports = function(grunt) {
     //   }
     // },
     coffee: {
+        // options: {
+        //     sourceMap: true
+        // },
       app: {
         src: ['src/**/*.coffee'],
         dest: 'nxr.js'
       }
     },
-    coffeelint: {
-      app: ['src/**/*.coffee']
-    },
+    // coffeelint: {
+    //   app: ['src/**/*.coffee']
+    // },
     uglify: {
       options: {
-        mangle: false
+        mangle: false,
+        // sourceMapIn: '',
+        sourceMap: 'nxr.map.js'
       },
-      my_target: {
+      app: {
         files: {
           'nxr.min.js': ['nxr.js']
         }

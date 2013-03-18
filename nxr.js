@@ -1,58 +1,55 @@
 (function() {
-  var cubes, list, math, num, number, opposite, race, square,
-    __slice = [].slice;
+  var nxr;
 
-  number = 42;
+  nxr = nxr || {};
 
-  opposite = true;
+  nxr.visitors = nxr.visitors || {};
 
-  if (opposite) {
-    number = -42;
-  }
-
-  square = function(x) {
-    return x * x;
-  };
-
-  list = [1, 2, 3, 4, 5];
-
-  math = {
-    root: Math.sqrt,
-    square: square,
-    cube: function(x) {
-      return x * square(x);
+  nxr.visitors.DeleteResourcesFromVideoMemory = (function() {
+    function DeleteResourcesFromVideoMemory(gl) {
+      this.gl = gl;
     }
-  };
 
-  race = function() {
-    var runners, winner;
+    DeleteResourcesFromVideoMemory.prototype.isInitializingVisitor = function() {
+      return false;
+    };
 
-    winner = arguments[0], runners = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    return print(winner, runners);
-  };
+    DeleteResourcesFromVideoMemory.prototype.isDeinitializingVisitor = function() {
+      return true;
+    };
 
-  if (typeof elvis !== "undefined" && elvis !== null) {
-    alert("I knew it!");
-  }
+    DeleteResourcesFromVideoMemory.prototype.visitVertices = function(vertices) {};
 
-  cubes = (function() {
-    var _i, _len, _results;
+    DeleteResourcesFromVideoMemory.prototype.visitIndices = function(indices) {};
 
-    _results = [];
-    for (_i = 0, _len = list.length; _i < _len; _i++) {
-      num = list[_i];
-      _results.push(math.cube(num));
-    }
-    return _results;
+    DeleteResourcesFromVideoMemory.prototype.visitTexture = function(texture) {};
+
+    DeleteResourcesFromVideoMemory.prototype.visitPixelShader = function(pixelShader) {};
+
+    DeleteResourcesFromVideoMemory.prototype.visitVertexShader = function(vertexShader) {};
+
+    DeleteResourcesFromVideoMemory.prototype.visitShaderEffect = function(shaderEffect) {};
+
+    DeleteResourcesFromVideoMemory.prototype.visitSkyBox = function(skyBox) {};
+
+    DeleteResourcesFromVideoMemory.prototype.visitLodTerrain = function(lodTerrain) {};
+
+    DeleteResourcesFromVideoMemory.prototype.visitFont = function(font) {};
+
+    DeleteResourcesFromVideoMemory.prototype.visitText = function(text) {};
+
+    return DeleteResourcesFromVideoMemory;
+
   })();
 
 }).call(this);
 
 (function() {
-  var number2, opposite2;
 
-  number2 = 42;
 
-  opposite2 = true;
+}).call(this);
+
+(function() {
+
 
 }).call(this);
