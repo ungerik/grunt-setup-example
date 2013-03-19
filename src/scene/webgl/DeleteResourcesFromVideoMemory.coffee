@@ -1,4 +1,3 @@
-
 class nxr.scene.webgl.DeleteResourcesFromVideoMemory
 
 	constructor: (@gl) ->

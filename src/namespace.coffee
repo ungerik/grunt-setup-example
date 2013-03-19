@@ -1,1 +1,4 @@
+###
+Namespace nxr
+###
 nxr = {}
