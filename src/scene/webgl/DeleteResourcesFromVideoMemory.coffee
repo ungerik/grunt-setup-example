@@ -1,8 +1,5 @@
 
-nxr = nxr or {}
-nxr.visitors = nxr.visitors or {}
-
-class nxr.visitors.DeleteResourcesFromVideoMemory
+class nxr.scene.webgl.DeleteResourcesFromVideoMemory
 
 	constructor: (@gl) ->
 

@@ -1,55 +1,48 @@
-(function() {
-  var nxr;
+var nxr;
 
-  nxr = nxr || {};
+nxr = {};
 
-  nxr.visitors = nxr.visitors || {};
+nxr.scene = {};
 
-  nxr.visitors.DeleteResourcesFromVideoMemory = (function() {
-    function DeleteResourcesFromVideoMemory(gl) {
-      this.gl = gl;
-    }
+nxr.scene.webgl = {};
 
-    DeleteResourcesFromVideoMemory.prototype.isInitializingVisitor = function() {
-      return false;
-    };
+nxr.scene.webgl.DeleteResourcesFromVideoMemory = (function() {
+  function DeleteResourcesFromVideoMemory(gl) {
+    this.gl = gl;
+  }
 
-    DeleteResourcesFromVideoMemory.prototype.isDeinitializingVisitor = function() {
-      return true;
-    };
+  DeleteResourcesFromVideoMemory.prototype.isInitializingVisitor = function() {
+    return false;
+  };
 
-    DeleteResourcesFromVideoMemory.prototype.visitVertices = function(vertices) {};
+  DeleteResourcesFromVideoMemory.prototype.isDeinitializingVisitor = function() {
+    return true;
+  };
 
-    DeleteResourcesFromVideoMemory.prototype.visitIndices = function(indices) {};
+  DeleteResourcesFromVideoMemory.prototype.visitVertices = function(vertices) {};
 
-    DeleteResourcesFromVideoMemory.prototype.visitTexture = function(texture) {};
+  DeleteResourcesFromVideoMemory.prototype.visitIndices = function(indices) {};
 
-    DeleteResourcesFromVideoMemory.prototype.visitPixelShader = function(pixelShader) {};
+  DeleteResourcesFromVideoMemory.prototype.visitTexture = function(texture) {};
 
-    DeleteResourcesFromVideoMemory.prototype.visitVertexShader = function(vertexShader) {};
+  DeleteResourcesFromVideoMemory.prototype.visitPixelShader = function(pixelShader) {};
 
-    DeleteResourcesFromVideoMemory.prototype.visitShaderEffect = function(shaderEffect) {};
+  DeleteResourcesFromVideoMemory.prototype.visitVertexShader = function(vertexShader) {};
 
-    DeleteResourcesFromVideoMemory.prototype.visitSkyBox = function(skyBox) {};
+  DeleteResourcesFromVideoMemory.prototype.visitShaderEffect = function(shaderEffect) {};
 
-    DeleteResourcesFromVideoMemory.prototype.visitLodTerrain = function(lodTerrain) {};
+  DeleteResourcesFromVideoMemory.prototype.visitSkyBox = function(skyBox) {};
 
-    DeleteResourcesFromVideoMemory.prototype.visitFont = function(font) {};
+  DeleteResourcesFromVideoMemory.prototype.visitLodTerrain = function(lodTerrain) {};
 
-    DeleteResourcesFromVideoMemory.prototype.visitText = function(text) {};
+  DeleteResourcesFromVideoMemory.prototype.visitFont = function(font) {};
 
-    return DeleteResourcesFromVideoMemory;
+  DeleteResourcesFromVideoMemory.prototype.visitText = function(text) {};
 
-  })();
+  return DeleteResourcesFromVideoMemory;
 
-}).call(this);
-
-(function() {
+})();
 
 
-}).call(this);
-
-(function() {
 
 
-}).call(this);
