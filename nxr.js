@@ -46,3 +46,25 @@ nxr.scene.webgl.DeleteResourcesFromVideoMemory = (function() {
 
 
 
+
+nxr.scene.webgl.setupScene = function(scene) {};
+
+nxr.scene.webgl.preRender = function(scene) {};
+
+nxr.scene.webgl.render = function(scene) {};
+
+nxr.scene.webgl.postRender = function(scene) {};
+
+nxr.scene.webgl.teardownScene = function(scene) {};
+
+nxr.scene.graph = {};
+
+nxr.scene.graph.setupScene = function(scene) {};
+
+nxr.scene.graph.preRender = function(scene) {};
+
+nxr.scene.graph.render = function(scene) {};
+
+nxr.scene.graph.postRender = function(scene) {};
+
+nxr.scene.graph.teardownScene = function(scene) {};

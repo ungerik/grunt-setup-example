@@ -84,7 +84,8 @@ module.exports = function(grunt) {
                     'nxr.js': [
                         'src/namespace.coffee', 'src/*.coffee',
                         'src/scene/namespace.coffee', 'src/scene/*.coffee',
-                        'src/scene/webgl/namespace.coffee', 'src/scene/webgl/*.coffee'
+                        'src/scene/webgl/namespace.coffee', 'src/scene/webgl/*.coffee',
+                        'src/scene/graph/namespace.coffee', 'src/scene/graph/*.coffee'
                     ]
                 }
             }
