@@ -17,12 +17,6 @@ module.exports = function(grunt) {
         // qunit: {
         //   files: ['test/**/*.html']
         // },
-        // concat: {
-        //   dist: {
-        //     src: ['<banner:meta.banner>', '<file_strip_banner:lib/<%= pkg.name %>.js>'],
-        //     dest: 'dist/<%= pkg.name %>.js'
-        //   }
-        // },
         // min: {
         //   dist: {
         //     src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
@@ -75,45 +69,53 @@ module.exports = function(grunt) {
         // https://npmjs.org/package/grunt-contrib-coffee
         coffee: {
             options: {
-                bare: true,
-                join: true
+                // separator: ';\n',
+                join: true,
+                bare: true
                 // sourceMap: true
             },
             compile: {
                 files: {
-                    'nxr.js': [
-                        'src/namespace.coffee', 'src/*.coffee',
-                        'src/scene/namespace.coffee', 'src/scene/*.coffee',
-                        'src/scene/webgl/namespace.coffee', 'src/scene/webgl/*.coffee',
-                        'src/scene/graph/namespace.coffee', 'src/scene/graph/*.coffee'
+                    'dist/nxr-only.js': [
+                        'src/nxr/namespace.coffee', 'src/nxr/*.coffee',
+                        'src/nxr/scene/namespace.coffee', 'src/nxr/scene/Node.coffee', 'src/nxr/scene/*.coffee',
+                        'src/nxr/scene/webgl/namespace.coffee', 'src/nxr/scene/webgl/*.coffee',
+                        'src/nxr/scene/graph/namespace.coffee', 'src/nxr/scene/graph/*.coffee'
                     ]
                 }
             }
         },
         // coffeelint: {
-        //   app: ['src/**/*.coffee']
+        //   app: ['src/nxr/**/*.coffee']
         // },
+        concat: {
+            options: {
+                separator: ';\n\n'
+            },
+            dist: {
+                src: ['node_modules/gl-matrix/dist/gl-matrix.js', 'dist/nxr-only.js'],
+                dest: 'dist/nxr-full.js'
+            }
+        },
         uglify: {
             options: {
                 mangle: false,
                 // sourceMapIn: '',
-                sourceMap: 'nxr.map.js'
+                sourceMap: 'dist/nxr-map.js'
             },
             app: {
                 files: {
-                    'nxr.min.js': ['nxr.js']
+                    'dist/nxr-min.js': ['dist/nxr-full.js']
                 }
             }
         }
     });
 
-    // Default task.
-    grunt.registerTask('default', ['coffee', 'uglify']); // , 'concat', 
+    grunt.registerTask('default', ['coffee' , 'concat', 'uglify']);
 
-    grunt.loadNpmTasks('grunt-contrib-less');
-
-    // grunt.loadNpmTasks('coffeelint');
     grunt.loadNpmTasks('grunt-contrib-coffee');
-    // grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    // grunt.loadNpmTasks('coffeelint');
 };
