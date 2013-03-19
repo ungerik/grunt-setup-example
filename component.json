@@ -5,15 +5,15 @@
   "version": "0.0.1",
   "keywords": ["WebGL", "3D"],
   "dependencies": {
-    "angular": "~1.0.5",
-    "bootstrap": "~2.3.1"
+    // "angular": "~1.0.5",
+    // "bootstrap": "~2.3.1"
   },
   "development": {},
   "license": "MIT",
   "scripts": [
-    "index.js",
+    "dist/nxr-min.js",
   ],
   "styles": [
-    "NextRealityEngine.css"
+    // "NextRealityEngine.css"
   ]
 }
