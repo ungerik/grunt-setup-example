@@ -8,8 +8,12 @@ Tech Stack
 
 * [Node.js](http://nodejs.org/)
 * [grunt](http://gruntjs.com/)
+
+May be used in the future:
+
 * [component](https://github.com/component/component)
 * [bower](http://twitter.github.com/bower/)
+
 
 Installation
 ------------

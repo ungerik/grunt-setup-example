@@ -2,4 +2,4 @@
 // load: temp/nxr/namespace.js
 ###
 
-nxr.scene = {}
+nxr.webgl = {}

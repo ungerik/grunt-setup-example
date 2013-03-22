@@ -1,7 +1,6 @@
 /*global module:false*/
 module.exports = function(grunt) {
 
-    // Project configuration.
     grunt.initConfig({
         pkg: '<json:package.json>',
         meta: {
@@ -11,60 +10,8 @@ module.exports = function(grunt) {
             '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
             ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
         },
-        // lint: {
-        //   files: ['Gruntfile.js', 'lib/**/*.js', 'test/**/*.js']
-        // },
-        // qunit: {
-        //   files: ['test/**/*.html']
-        // },
-        // min: {
-        //   dist: {
-        //     src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
-        //     dest: 'dist/<%= pkg.name %>.min.js'
-        //   }
-        // },
-        // watch: {
-        //   files: '<config:lint.files>',
-        //   tasks: 'lint qunit'
-        // },
-        // jshint: {
-        //   options: {
-        //     curly: true,
-        //     eqeqeq: true,
-        //     immed: true,
-        //     latedef: true,
-        //     newcap: true,
-        //     noarg: true,
-        //     sub: true,
-        //     undef: true,
-        //     boss: true,
-        //     eqnull: true,
-        //     browser: true
-        //   },
-        //   globals: {
-        //     jQuery: true
-        //   }
-        // },
 
-        // less: {
-        //   development: {
-        //     options: {
-        //       paths: ["assets/css"]
-        //     },
-        //     files: {
-        //       "style.css": "path/to/source.less"
-        //     }
-        //   },
-        //   production: {
-        //     options: {
-        //       paths: ["assets/css"],
-        //       yuicompress: true
-        //     },
-        //     files: {
-        //       "style.css": "path/to/source.less"
-        //     }
-        //   }
-        // },
+        clean: ["temp"],
 
         // https://npmjs.org/package/grunt-contrib-coffee
         coffee: {
@@ -74,20 +21,40 @@ module.exports = function(grunt) {
                 bare: true
                 // sourceMap: true
             },
-            compile: {
-                files: {
-                    'dist/nxr-only.js': [
-                        'src/nxr/namespace.coffee', 'src/nxr/*.coffee',
-                        'src/nxr/scene/namespace.coffee', 'src/nxr/scene/Node.coffee', 'src/nxr/scene/*.coffee',
-                        'src/nxr/scene/webgl/namespace.coffee', 'src/nxr/scene/webgl/*.coffee',
-                        'src/nxr/scene/graph/namespace.coffee', 'src/nxr/scene/graph/*.coffee'
-                    ]
-                }
+            nxr: {
+                expand: true,
+                cwd: 'src/nxr/',
+                src: ['*.coffee'],
+                dest: 'temp/nxr/',
+                ext: '.js'
+            },
+            scene: {
+                expand: true,
+                cwd: 'src/nxr/scene/',
+                src: ['*.coffee'],
+                dest: 'temp/nxr/scene/',
+                ext: '.js'
+            },
+            webgl: {
+                expand: true,
+                cwd: 'src/nxr/webgl/',
+                src: ['*.coffee'],
+                dest: 'temp/nxr/webgl/',
+                ext: '.js'
             }
         },
+
         // coffeelint: {
         //   app: ['src/nxr/**/*.coffee']
         // },
+
+        depconcat: {
+            dist: {
+                src: ['temp/**/*.js'],
+                dest: 'dist/nxr-only.js'
+            }
+        },
+
         concat: {
             options: {
                 separator: ';\n\n'
@@ -97,6 +64,7 @@ module.exports = function(grunt) {
                 dest: 'dist/nxr-full.js'
             }
         },
+
         uglify: {
             options: {
                 mangle: false,
@@ -111,11 +79,13 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['coffee' , 'concat', 'uglify']);
+    grunt.registerTask('default', ['clean', 'coffee', 'depconcat', 'uglify']);
 
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-coffee');
+    grunt.loadNpmTasks('grunt-dep-concat');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-less');
+    // grunt.loadNpmTasks('grunt-contrib-less');
     // grunt.loadNpmTasks('coffeelint');
 };

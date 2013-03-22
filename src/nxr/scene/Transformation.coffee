@@ -1,10 +1,12 @@
-class nxr.scene.MatrixTransformation extends nxr.scene.Transformation
+###
+// load: temp/nxr/scene/namespace.js
+###
 
+class nxr.scene.Transformation
 	constructor: (@matrix) ->
 
 	acceptVisitor: (visitor) ->
-		visitor.visitMatrixTransformation?(@)
-		super visitor
+		visitor.visitTransformation? @
 		return
 
 	getMatrix4x4: ->

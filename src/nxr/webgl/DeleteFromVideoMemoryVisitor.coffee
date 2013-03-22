@@ -1,4 +1,8 @@
-class nxr.scene.webgl.DeleteResourcesFromVideoMemory
+###
+// load: temp/nxr/webgl/namespace.js
+###
+
+class nxr.webgl.DeleteFromVideoMemoryVisitor
 
 	constructor: (@gl) ->
 

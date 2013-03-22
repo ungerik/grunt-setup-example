@@ -1,3 +1,7 @@
+###
+// load: temp/nxr/scene/namespace.js
+###
+
 class nxr.scene.Node
 
 	noChildren: []
@@ -17,7 +21,6 @@ class nxr.scene.Node
 		return
 
 	removeChild: (index) ->
-		index = indexOrChild
 		a = @children[..index]
 		b = @children[index..]
 		@children = a.concat b

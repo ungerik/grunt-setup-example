@@ -1,17 +1,43 @@
-/*
-Namespace nxr
-*/
-
 "use strict";
 var nxr;
 
 nxr = {};
 
 /*
-Namespace nxr.scene
+// load: temp/nxr/namespace.js
 */
 nxr.scene = {};
 
+/*
+// load: temp/nxr/namespace.js
+*/
+nxr.webgl = {};
+
+/*
+// load: temp/nxr/scene/namespace.js
+*/
+nxr.scene.Transformation = (function() {
+  function Transformation(matrix) {
+    this.matrix = matrix;
+  }
+
+  Transformation.prototype.acceptVisitor = function(visitor) {
+    if (typeof visitor.visitTransformation === "function") {
+      visitor.visitTransformation(this);
+    }
+  };
+
+  Transformation.prototype.getMatrix4x4 = function() {
+    return this.matrix;
+  };
+
+  return Transformation;
+
+})();
+
+/*
+// load: temp/nxr/scene/namespace.js
+*/
 nxr.scene.Node = (function() {
   Node.prototype.noChildren = [];
 
@@ -40,7 +66,6 @@ nxr.scene.Node = (function() {
   Node.prototype.removeChild = function(index) {
     var a, b;
 
-    index = indexOrChild;
     a = this.children.slice(0, +index + 1 || 9e9);
     b = this.children.slice(index);
     this.children = a.concat(b);
@@ -50,136 +75,127 @@ nxr.scene.Node = (function() {
 
 })();
 
-nxr.scene.BuildWithPrimitivesVisitor = (function() {
-  function BuildWithPrimitivesVisitor() {}
+/*
+// load: temp/nxr/webgl/namespace.js
+*/
 
-  BuildWithPrimitivesVisitor.prototype.visitSphere = function(sphere) {
-    return buildSphere(sphere);
-  };
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  return BuildWithPrimitivesVisitor;
+nxr.webgl.SceneVisitor = (function(_super) {
+  __extends(SceneVisitor, _super);
+
+  function SceneVisitor(gl) {
+    this.gl = gl;
+    this.setupVisitors = [new nxr.webgl.LoadIntoVideoMemoryVisitor(gl)];
+    this.preRenderVisitors = [];
+    this.renderVisitors = [new nxr.webgl.RenderSceneVisitor(gl)];
+    this.postRenderVisitors = [];
+    this.teardownVisitors = [new nxr.webgl.DeleteFromVideoMemoryVisitor(gl)];
+  }
+
+  return SceneVisitor;
+
+})(nxr.scene.Visitor);
+
+/*
+// load: temp/nxr/webgl/namespace.js
+*/
+
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+nxr.webgl.Scene = (function(_super) {
+  __extends(Scene, _super);
+
+  function Scene(canvas) {
+    var e, message;
+
+    try {
+      this.gl = canvas.getContext("webgl");
+    } catch (_error) {
+      e = _error;
+      message = "Error creating WebGL context: " + e.toString;
+      alert(message);
+      throw new Error(message);
+    }
+    if (this.gl == null) {
+      throw new Error("Can't get WebGL context");
+    }
+    Scene.__super__.constructor.call(this, new nxr.webgl.SceneVisitors(this.gl));
+  }
+
+  return Scene;
+
+})(nxr.scene.Scene);
+
+/*
+// load: temp/nxr/webgl/namespace.js
+*/
+nxr.webgl.RenderSceneVisitor = (function() {
+  function RenderSceneVisitor(gl) {
+    this.gl = gl;
+  }
+
+  return RenderSceneVisitor;
 
 })();
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-nxr.scene.QuaternionRotation = (function(_super) {
-  __extends(QuaternionRotation, _super);
-
-  function QuaternionRotation(quaternion) {
-    this.quaternion = quaternion;
+/*
+// load: temp/nxr/webgl/namespace.js
+*/
+nxr.webgl.LoadIntoVideoMemoryVisitor = (function() {
+  function LoadIntoVideoMemoryVisitor(gl) {
+    this.gl = gl;
   }
 
-  QuaternionRotation.prototype.acceptVisitor = function(visitor) {
-    if (typeof visitor.visitQuaternionRotation === "function") {
-      visitor.visitQuaternionRotation(this);
-    }
-    QuaternionRotation.__super__.acceptVisitor.call(this, visitor);
-  };
+  return LoadIntoVideoMemoryVisitor;
 
-  QuaternionRotation.prototype.getMatrix4x4 = function() {
-    return this.matrix;
-  };
+})();
 
-  return QuaternionRotation;
-
-})(nxr.scene.Transformation);
-
-var buildSphere,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-buildSphere = function(sphere) {
-  return sphere.children.length = 0;
-};
-
-nxr.scene.Sphere = (function(_super) {
-  __extends(Sphere, _super);
-
-  function Sphere(position, radius) {
-    this.position = position;
-    this.radius = radius != null ? radius : 1;
+/*
+// load: temp/nxr/webgl/namespace.js
+*/
+nxr.webgl.DeleteFromVideoMemoryVisitor = (function() {
+  function DeleteFromVideoMemoryVisitor(gl) {
+    this.gl = gl;
   }
 
-  return Sphere;
-
-})(nxr.scene.Node);
-
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-nxr.scene.MatrixTransformation = (function(_super) {
-  __extends(MatrixTransformation, _super);
-
-  function MatrixTransformation(matrix) {
-    this.matrix = matrix;
-  }
-
-  MatrixTransformation.prototype.acceptVisitor = function(visitor) {
-    if (typeof visitor.visitMatrixTransformation === "function") {
-      visitor.visitMatrixTransformation(this);
-    }
-    MatrixTransformation.__super__.acceptVisitor.call(this, visitor);
+  DeleteFromVideoMemoryVisitor.prototype.isInitializingVisitor = function() {
+    return false;
   };
 
-  MatrixTransformation.prototype.getMatrix4x4 = function() {
-    return this.matrix;
+  DeleteFromVideoMemoryVisitor.prototype.isDeinitializingVisitor = function() {
+    return true;
   };
 
-  return MatrixTransformation;
+  DeleteFromVideoMemoryVisitor.prototype.visitVertices = function(vertices) {};
 
-})(nxr.scene.Transformation);
+  DeleteFromVideoMemoryVisitor.prototype.visitIndices = function(indices) {};
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  DeleteFromVideoMemoryVisitor.prototype.visitTexture = function(texture) {};
 
-nxr.scene.XRotation = (function(_super) {
-  __extends(XRotation, _super);
+  DeleteFromVideoMemoryVisitor.prototype.visitPixelShader = function(pixelShader) {};
 
-  function XRotation(angle) {
-    this.angle = angle;
-  }
+  DeleteFromVideoMemoryVisitor.prototype.visitVertexShader = function(vertexShader) {};
 
-  XRotation.prototype.acceptVisitor = function(visitor) {
-    if (typeof visitor.visitXRotation === "function") {
-      visitor.visitXRotation(this);
-    }
-    XRotation.__super__.acceptVisitor.call(this, visitor);
-  };
+  DeleteFromVideoMemoryVisitor.prototype.visitShaderEffect = function(shaderEffect) {};
 
-  XRotation.prototype.getMatrix4x4 = function() {
-    return this.matrix;
-  };
+  DeleteFromVideoMemoryVisitor.prototype.visitSkyBox = function(skyBox) {};
 
-  return XRotation;
+  DeleteFromVideoMemoryVisitor.prototype.visitLodTerrain = function(lodTerrain) {};
 
-})(nxr.scene.Transformation);
+  DeleteFromVideoMemoryVisitor.prototype.visitFont = function(font) {};
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  DeleteFromVideoMemoryVisitor.prototype.visitText = function(text) {};
 
-nxr.scene.YRotation = (function(_super) {
-  __extends(YRotation, _super);
+  return DeleteFromVideoMemoryVisitor;
 
-  function YRotation(angle) {
-    this.angle = angle;
-  }
+})();
 
-  YRotation.prototype.acceptVisitor = function(visitor) {
-    if (typeof visitor.visitYRotation === "function") {
-      visitor.visitYRotation(this);
-    }
-    YRotation.__super__.acceptVisitor.call(this, visitor);
-  };
-
-  YRotation.prototype.getMatrix4x4 = function() {
-    return this.matrix;
-  };
-
-  return YRotation;
-
-})(nxr.scene.Transformation);
+/*
+// load: temp/nxr/scene/Transformation.js
+*/
 
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -207,72 +223,344 @@ nxr.scene.ZRotation = (function(_super) {
 })(nxr.scene.Transformation);
 
 /*
-Namespace nxr.scene.webgl
+// load: temp/nxr/scene/Transformation.js
 */
-nxr.scene.webgl = {};
 
-nxr.scene.webgl.DeleteResourcesFromVideoMemory = (function() {
-  function DeleteResourcesFromVideoMemory(gl) {
-    this.gl = gl;
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+nxr.scene.YRotation = (function(_super) {
+  __extends(YRotation, _super);
+
+  function YRotation(angle) {
+    this.angle = angle;
   }
 
-  DeleteResourcesFromVideoMemory.prototype.isInitializingVisitor = function() {
-    return false;
+  YRotation.prototype.acceptVisitor = function(visitor) {
+    if (typeof visitor.visitYRotation === "function") {
+      visitor.visitYRotation(this);
+    }
+    YRotation.__super__.acceptVisitor.call(this, visitor);
   };
 
-  DeleteResourcesFromVideoMemory.prototype.isDeinitializingVisitor = function() {
-    return true;
+  YRotation.prototype.getMatrix4x4 = function() {
+    return this.matrix;
   };
 
-  DeleteResourcesFromVideoMemory.prototype.visitVertices = function(vertices) {};
+  return YRotation;
 
-  DeleteResourcesFromVideoMemory.prototype.visitIndices = function(indices) {};
+})(nxr.scene.Transformation);
 
-  DeleteResourcesFromVideoMemory.prototype.visitTexture = function(texture) {};
+/*
+// load: temp/nxr/scene/Transformation.js
+*/
 
-  DeleteResourcesFromVideoMemory.prototype.visitPixelShader = function(pixelShader) {};
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  DeleteResourcesFromVideoMemory.prototype.visitVertexShader = function(vertexShader) {};
+nxr.scene.XRotation = (function(_super) {
+  __extends(XRotation, _super);
 
-  DeleteResourcesFromVideoMemory.prototype.visitShaderEffect = function(shaderEffect) {};
+  function XRotation(angle) {
+    this.angle = angle;
+  }
 
-  DeleteResourcesFromVideoMemory.prototype.visitSkyBox = function(skyBox) {};
+  XRotation.prototype.acceptVisitor = function(visitor) {
+    if (typeof visitor.visitXRotation === "function") {
+      visitor.visitXRotation(this);
+    }
+    XRotation.__super__.acceptVisitor.call(this, visitor);
+  };
 
-  DeleteResourcesFromVideoMemory.prototype.visitLodTerrain = function(lodTerrain) {};
+  XRotation.prototype.getMatrix4x4 = function() {
+    return this.matrix;
+  };
 
-  DeleteResourcesFromVideoMemory.prototype.visitFont = function(font) {};
+  return XRotation;
 
-  DeleteResourcesFromVideoMemory.prototype.visitText = function(text) {};
+})(nxr.scene.Transformation);
 
-  return DeleteResourcesFromVideoMemory;
+/*
+// load: temp/nxr/scene/namespace.js
+*/
+
+var concatVisitors;
+
+concatVisitors = function(a, b) {
+  var result;
+
+  result = new nxr.scene.Visitors;
+  result.setupVisitors = a.setupVisitors.concat(b.setupVisitors);
+  result.preRenderVisitors = a.preRenderVisitors.concat(b.preRenderVisitors);
+  result.renderVisitors = a.renderVisitors.concat(b.renderVisitors);
+  result.postRenderVisitors = a.postRenderVisitors.concat(b.postRenderVisitors);
+  result.teardownVisitors = a.teardownVisitors.concat(b.teardownVisitors);
+  return result;
+};
+
+nxr.scene.Visitors = (function() {
+  function Visitors() {
+    this.setupVisitors = [];
+    this.preRenderVisitors = [];
+    this.renderVisitors = [];
+    this.postRenderVisitors = [];
+    this.teardownVisitors = [];
+  }
+
+  Visitors.prototype.setup = function(scene) {
+    var visitor, _i, _len, _ref;
+
+    _ref = this.setupVisitors;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      visitor = _ref[_i];
+      visitor.visit(scene);
+    }
+  };
+
+  Visitors.prototype.preRender = function(scene) {
+    var visitor, _i, _len, _ref;
+
+    _ref = this.preRenderVisitors;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      visitor = _ref[_i];
+      visitor.visit(scene);
+    }
+  };
+
+  Visitors.prototype.render = function(scene) {
+    var visitor, _i, _len, _ref;
+
+    _ref = this.renderVisitors;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      visitor = _ref[_i];
+      visitor.visit(scene);
+    }
+  };
+
+  Visitors.prototype.postRender = function(scene) {
+    var visitor, _i, _len, _ref;
+
+    _ref = this.postRenderVisitors;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      visitor = _ref[_i];
+      visitor.visit(scene);
+    }
+  };
+
+  Visitors.prototype.teardown = function(scene) {
+    var visitor, _i, _len, _ref;
+
+    _ref = this.teardownVisitors;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      visitor = _ref[_i];
+      visitor.visit(scene);
+    }
+  };
+
+  return Visitors;
 
 })();
 
+/*
+// load: temp/nxr/scene/Node.js
+*/
 
+var buildSphere,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
+buildSphere = function(sphere) {
+  sphere.children.length = 0;
+  return null;
+};
 
+nxr.scene.Sphere = (function(_super) {
+  __extends(Sphere, _super);
 
-nxr.scene.webgl.setupScene = function(scene) {};
+  function Sphere(position, radius) {
+    this.position = position;
+    this.radius = radius != null ? radius : 1;
+  }
 
-nxr.scene.webgl.preRender = function(scene) {};
+  Sphere.prototype.acceptVisitor = function(visitor) {
+    if (visitor.visitSphere != null) {
+      visitor.visitSphere(this);
+    } else {
+      Sphere.__super__.acceptVisitor.call(this, visitor);
+    }
+  };
 
-nxr.scene.webgl.render = function(scene) {};
+  return Sphere;
 
-nxr.scene.webgl.postRender = function(scene) {};
-
-nxr.scene.webgl.teardownScene = function(scene) {};
+})(nxr.scene.Node);
 
 /*
-Namespace nxr.scene.graph
+// load: temp/nxr/scene/Node.js
 */
-nxr.scene.graph = {};
 
-nxr.scene.graph.setupScene = function(scene) {};
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-nxr.scene.graph.preRender = function(scene) {};
+nxr.scene.Scene = (function(_super) {
+  __extends(Scene, _super);
 
-nxr.scene.graph.render = function(scene) {};
+  function Scene(visitors) {
+    this.visitors = visitors;
+    Scene.__super__.constructor.call(this, null);
+  }
 
-nxr.scene.graph.postRender = function(scene) {};
+  Scene.prototype.setup = function() {
+    return this.visitors.setup(this);
+  };
 
-nxr.scene.graph.teardownScene = function(scene) {};
+  Scene.prototype.render = function() {
+    this.visitors.preRender(this);
+    this.visitors.render(this);
+    return this.visitors.postRender(this);
+  };
+
+  Scene.prototype.teardown = function() {
+    return this.visitors.teardown(this);
+  };
+
+  return Scene;
+
+})(nxr.scene.Node);
+
+/*
+// load: temp/nxr/scene/Transformation.js
+*/
+
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+nxr.scene.QuaternionRotation = (function(_super) {
+  __extends(QuaternionRotation, _super);
+
+  function QuaternionRotation(quaternion) {
+    this.quaternion = quaternion;
+  }
+
+  QuaternionRotation.prototype.acceptVisitor = function(visitor) {
+    if (typeof visitor.visitQuaternionRotation === "function") {
+      visitor.visitQuaternionRotation(this);
+    }
+    QuaternionRotation.__super__.acceptVisitor.call(this, visitor);
+  };
+
+  QuaternionRotation.prototype.getMatrix4x4 = function() {
+    return this.matrix;
+  };
+
+  return QuaternionRotation;
+
+})(nxr.scene.Transformation);
+
+/*
+// load: temp/nxr/scene/Node.js
+*/
+
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+nxr.scene.Model = (function(_super) {
+  __extends(Model, _super);
+
+  function Model(id, children) {
+    this.id = id;
+    Model.__super__.constructor.call(this, children);
+  }
+
+  Model.prototype.acceptVisitor = function(visitor) {
+    if (typeof visitor.visitModel === "function") {
+      visitor.visitModel(this);
+    }
+  };
+
+  return Model;
+
+})(nxr.scene.Node);
+
+/*
+// load: temp/nxr/scene/namespace.js
+*/
+nxr.scene.Instance = (function() {
+  function Instance(modelId) {
+    this.modelId = modelId;
+  }
+
+  Instance.prototype.acceptVisitor = function(visitor) {
+    if (typeof visitor.visitInstance === "function") {
+      visitor.visitInstance(this);
+    }
+  };
+
+  return Instance;
+
+})();
+
+/*
+// load: temp/nxr/scene/namespace.js
+*/
+nxr.scene.BuildWithPrimitivesVisitor = (function() {
+  function BuildWithPrimitivesVisitor() {}
+
+  BuildWithPrimitivesVisitor.prototype.visitSphere = function(sphere) {
+    return buildSphere(sphere);
+  };
+
+  return BuildWithPrimitivesVisitor;
+
+})();
+
+/*
+// load: temp/nxr/scene/Node.js
+*/
+
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+nxr.scene.BoundingBox = (function(_super) {
+  __extends(BoundingBox, _super);
+
+  function BoundingBox(min, max, children) {
+    this.min = min;
+    this.max = max;
+    BoundingBox.__super__.constructor.call(this, children);
+  }
+
+  BoundingBox.prototype.acceptVisitor = function(visitor) {
+    if (typeof visitor.visitBoundingBox === "function") {
+      visitor.visitBoundingBox(this);
+    }
+  };
+
+  return BoundingBox;
+
+})(nxr.scene.Node);
+
+/*
+// load: temp/nxr/scene/Node.js
+*/
+
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+nxr.scene.BoundingSphere = (function(_super) {
+  __extends(BoundingSphere, _super);
+
+  function BoundingSphere(center, radius, children) {
+    this.center = center;
+    this.radius = radius;
+    BoundingSphere.__super__.constructor.call(this, children);
+  }
+
+  BoundingSphere.prototype.acceptVisitor = function(visitor) {
+    if (typeof visitor.visitBoundingSphere === "function") {
+      visitor.visitBoundingSphere(this);
+    }
+  };
+
+  return BoundingSphere;
+
+})(nxr.scene.Node);
