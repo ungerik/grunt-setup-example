@@ -1,8 +1,8 @@
 ###
-// load: temp/nxr/scene/namespace.js
+// load: src/nxr/scene/namespace.coffee
 ###
 
-concatVisitors = (a, b) ->
+nxr.scene.concatVisitors = (a, b) ->
 	result = new nxr.scene.Visitors
 	result.setupVisitors = a.setupVisitors.concat b.setupVisitors 
 	result.preRenderVisitors = a.preRenderVisitors.concat b.preRenderVisitors 

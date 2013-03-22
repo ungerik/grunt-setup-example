@@ -1,8 +1,8 @@
 ###
-// load: temp/nxr/scene/Node.js
+// load: src/nxr/scene/Node.coffee
 ###
 
-buildSphere = (sphere) ->
+nxr.scene.buildSphere = (sphere) ->
 	sphere.children.length = 0
 	#todo
 	return null

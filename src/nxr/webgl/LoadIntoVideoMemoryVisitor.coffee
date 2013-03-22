@@ -1,5 +1,5 @@
 ###
-// load: temp/nxr/webgl/namespace.js
+// load: src/nxr/webgl/namespace.coffee
 ###
 
 class nxr.webgl.LoadIntoVideoMemoryVisitor

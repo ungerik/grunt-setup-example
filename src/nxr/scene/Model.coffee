@@ -1,5 +1,5 @@
 ###
-// load: temp/nxr/scene/Node.js
+// load: src/nxr/scene/Node.coffee
 ###
 
 class nxr.scene.Model extends nxr.scene.Node

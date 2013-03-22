@@ -1,5 +1,5 @@
 ###
-// load: temp/nxr/scene/Transformation.js
+// load: src/nxr/scene/Transformation.coffee
 ###
 
 class nxr.scene.ZRotation extends nxr.scene.Transformation

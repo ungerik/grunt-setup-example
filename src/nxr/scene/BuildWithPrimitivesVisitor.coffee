@@ -1,8 +1,8 @@
 ###
-// load: temp/nxr/scene/namespace.js
+// load: src/nxr/scene/namespace.coffee
 ###
 
 class nxr.scene.BuildWithPrimitivesVisitor
 
 	visitSphere: (sphere) ->
-		buildSphere sphere
+		nxr.scene.buildSphere sphere

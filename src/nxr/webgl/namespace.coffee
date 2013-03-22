@@ -1,5 +1,5 @@
 ###
-// load: temp/nxr/namespace.js
+// load: src/nxr/namespace.coffee
 ###
 
 nxr.webgl = {}

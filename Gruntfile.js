@@ -11,7 +11,14 @@ module.exports = function(grunt) {
             ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
         },
 
-        clean: ["temp"],
+        // clean: ["temp"],
+
+        depconcat: {
+            dist: {
+                src: ['src/**/*.coffee'],
+                dest: 'dist/nxr-only.coffee'
+            }
+        },
 
         // https://npmjs.org/package/grunt-contrib-coffee
         coffee: {
@@ -21,39 +28,16 @@ module.exports = function(grunt) {
                 bare: true
                 // sourceMap: true
             },
-            nxr: {
-                expand: true,
-                cwd: 'src/nxr/',
-                src: ['*.coffee'],
-                dest: 'temp/nxr/',
-                ext: '.js'
-            },
-            scene: {
-                expand: true,
-                cwd: 'src/nxr/scene/',
-                src: ['*.coffee'],
-                dest: 'temp/nxr/scene/',
-                ext: '.js'
-            },
-            webgl: {
-                expand: true,
-                cwd: 'src/nxr/webgl/',
-                src: ['*.coffee'],
-                dest: 'temp/nxr/webgl/',
-                ext: '.js'
+            compile: {
+                files: {
+                  'dist/nxr-only.js': 'dist/nxr-only.coffee'
+                }
             }
         },
 
         // coffeelint: {
         //   app: ['src/nxr/**/*.coffee']
         // },
-
-        depconcat: {
-            dist: {
-                src: ['temp/**/*.js'],
-                dest: 'dist/nxr-only.js'
-            }
-        },
 
         concat: {
             options: {
@@ -79,11 +63,11 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['clean', 'coffee', 'depconcat', 'uglify']);
+    grunt.registerTask('default', ['depconcat', 'coffee', 'concat', 'uglify']);
 
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-coffee');
+    // grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-dep-concat');
+    grunt.loadNpmTasks('grunt-contrib-coffee');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     // grunt.loadNpmTasks('grunt-contrib-less');

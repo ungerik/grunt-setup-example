@@ -1,6 +1,6 @@
 ###
-// load: temp/nxr/webgl/namespace.js
-// load: temp/nxr/scene/Visitors.js
+// load: src/nxr/webgl/namespace.coffee
+// load: src/nxr/scene/Visitors.coffee
 ###
 
 class nxr.webgl.SceneVisitors extends nxr.scene.Visitors

@@ -1,16 +1,22 @@
 "use strict";
-var nxr;
+var nxr,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 nxr = {};
 
 /*
-// load: temp/nxr/namespace.js
+// load: src/nxr/namespace.coffee
 */
+
+
 nxr.scene = {};
 
 /*
-// load: temp/nxr/scene/namespace.js
+// load: src/nxr/scene/namespace.coffee
 */
+
+
 nxr.scene.Node = (function() {
   Node.prototype.noChildren = [];
 
@@ -49,17 +55,18 @@ nxr.scene.Node = (function() {
 })();
 
 /*
-// load: temp/nxr/namespace.js
+// load: src/nxr/namespace.coffee
 */
+
+
 nxr.webgl = {};
 
 /*
-// load: temp/nxr/scene/namespace.js
+// load: src/nxr/scene/namespace.coffee
 */
 
-var concatVisitors;
 
-concatVisitors = function(a, b) {
+nxr.scene.concatVisitors = function(a, b) {
   var result;
 
   result = new nxr.scene.Visitors;
@@ -135,11 +142,9 @@ nxr.scene.Visitors = (function() {
 })();
 
 /*
-// load: temp/nxr/scene/Node.js
+// load: src/nxr/scene/Node.coffee
 */
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 nxr.scene.Scene = (function(_super) {
   __extends(Scene, _super);
@@ -168,8 +173,10 @@ nxr.scene.Scene = (function(_super) {
 })(nxr.scene.Node);
 
 /*
-// load: temp/nxr/scene/namespace.js
+// load: src/nxr/scene/namespace.coffee
 */
+
+
 nxr.scene.Transformation = (function() {
   function Transformation(matrix) {
     this.matrix = matrix;
@@ -190,12 +197,10 @@ nxr.scene.Transformation = (function() {
 })();
 
 /*
-// load: temp/nxr/webgl/namespace.js
-// load: temp/nxr/scene/Visitors.js
+// load: src/nxr/webgl/namespace.coffee
+// load: src/nxr/scene/Visitors.coffee
 */
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 nxr.webgl.SceneVisitors = (function(_super) {
   __extends(SceneVisitors, _super);
@@ -214,12 +219,10 @@ nxr.webgl.SceneVisitors = (function(_super) {
 })(nxr.scene.Visitors);
 
 /*
-// load: temp/nxr/webgl/namespace.js
-// load: temp/nxr/scene/Scene.js
+// load: src/nxr/webgl/namespace.coffee
+// load: src/nxr/scene/Scene.coffee
 */
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 nxr.webgl.Scene = (function(_super) {
   __extends(Scene, _super);
@@ -246,8 +249,10 @@ nxr.webgl.Scene = (function(_super) {
 })(nxr.scene.Scene);
 
 /*
-// load: temp/nxr/webgl/namespace.js
+// load: src/nxr/webgl/namespace.coffee
 */
+
+
 nxr.webgl.RenderSceneVisitor = (function() {
   function RenderSceneVisitor(gl) {
     this.gl = gl;
@@ -258,8 +263,10 @@ nxr.webgl.RenderSceneVisitor = (function() {
 })();
 
 /*
-// load: temp/nxr/webgl/namespace.js
+// load: src/nxr/webgl/namespace.coffee
 */
+
+
 nxr.webgl.LoadIntoVideoMemoryVisitor = (function() {
   function LoadIntoVideoMemoryVisitor(gl) {
     this.gl = gl;
@@ -270,8 +277,10 @@ nxr.webgl.LoadIntoVideoMemoryVisitor = (function() {
 })();
 
 /*
-// load: temp/nxr/webgl/namespace.js
+// load: src/nxr/webgl/namespace.coffee
 */
+
+
 nxr.webgl.DeleteFromVideoMemoryVisitor = (function() {
   function DeleteFromVideoMemoryVisitor(gl) {
     this.gl = gl;
@@ -310,11 +319,16 @@ nxr.webgl.DeleteFromVideoMemoryVisitor = (function() {
 })();
 
 /*
-// load: temp/nxr/scene/Transformation.js
+// load: src/nxr/scene/namespace.coffee
 */
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+nxr.scene.graph = {};
+
+/*
+// load: src/nxr/scene/Transformation.coffee
+*/
+
 
 nxr.scene.ZRotation = (function(_super) {
   __extends(ZRotation, _super);
@@ -339,11 +353,9 @@ nxr.scene.ZRotation = (function(_super) {
 })(nxr.scene.Transformation);
 
 /*
-// load: temp/nxr/scene/Transformation.js
+// load: src/nxr/scene/Transformation.coffee
 */
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 nxr.scene.YRotation = (function(_super) {
   __extends(YRotation, _super);
@@ -368,11 +380,9 @@ nxr.scene.YRotation = (function(_super) {
 })(nxr.scene.Transformation);
 
 /*
-// load: temp/nxr/scene/Transformation.js
+// load: src/nxr/scene/Transformation.coffee
 */
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 nxr.scene.XRotation = (function(_super) {
   __extends(XRotation, _super);
@@ -397,14 +407,11 @@ nxr.scene.XRotation = (function(_super) {
 })(nxr.scene.Transformation);
 
 /*
-// load: temp/nxr/scene/Node.js
+// load: src/nxr/scene/Node.coffee
 */
 
-var buildSphere,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-buildSphere = function(sphere) {
+nxr.scene.buildSphere = function(sphere) {
   sphere.children.length = 0;
   return null;
 };
@@ -430,11 +437,9 @@ nxr.scene.Sphere = (function(_super) {
 })(nxr.scene.Node);
 
 /*
-// load: temp/nxr/scene/Transformation.js
+// load: src/nxr/scene/Transformation.coffee
 */
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 nxr.scene.QuaternionRotation = (function(_super) {
   __extends(QuaternionRotation, _super);
@@ -459,11 +464,9 @@ nxr.scene.QuaternionRotation = (function(_super) {
 })(nxr.scene.Transformation);
 
 /*
-// load: temp/nxr/scene/Node.js
+// load: src/nxr/scene/Node.coffee
 */
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 nxr.scene.Model = (function(_super) {
   __extends(Model, _super);
@@ -484,8 +487,10 @@ nxr.scene.Model = (function(_super) {
 })(nxr.scene.Node);
 
 /*
-// load: temp/nxr/scene/namespace.js
+// load: src/nxr/scene/namespace.coffee
 */
+
+
 nxr.scene.Instance = (function() {
   function Instance(modelId) {
     this.modelId = modelId;
@@ -502,13 +507,15 @@ nxr.scene.Instance = (function() {
 })();
 
 /*
-// load: temp/nxr/scene/namespace.js
+// load: src/nxr/scene/namespace.coffee
 */
+
+
 nxr.scene.BuildWithPrimitivesVisitor = (function() {
   function BuildWithPrimitivesVisitor() {}
 
   BuildWithPrimitivesVisitor.prototype.visitSphere = function(sphere) {
-    return buildSphere(sphere);
+    return nxr.scene.buildSphere(sphere);
   };
 
   return BuildWithPrimitivesVisitor;
@@ -516,11 +523,9 @@ nxr.scene.BuildWithPrimitivesVisitor = (function() {
 })();
 
 /*
-// load: temp/nxr/scene/Node.js
+// load: src/nxr/scene/Node.coffee
 */
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 nxr.scene.BoundingBox = (function(_super) {
   __extends(BoundingBox, _super);
@@ -542,11 +547,9 @@ nxr.scene.BoundingBox = (function(_super) {
 })(nxr.scene.Node);
 
 /*
-// load: temp/nxr/scene/Node.js
+// load: src/nxr/scene/Node.coffee
 */
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 nxr.scene.BoundingSphere = (function(_super) {
   __extends(BoundingSphere, _super);
