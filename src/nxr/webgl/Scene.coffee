@@ -1,9 +1,7 @@
 ###
 // load: temp/nxr/webgl/namespace.js
+// load: temp/nxr/scene/Scene.js
 ###
-
-# // load: temp/nxr/scene/Scene.js
-
 
 class nxr.webgl.Scene extends nxr.scene.Scene
 

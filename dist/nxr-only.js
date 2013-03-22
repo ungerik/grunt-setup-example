@@ -9,33 +9,6 @@ nxr = {};
 nxr.scene = {};
 
 /*
-// load: temp/nxr/namespace.js
-*/
-nxr.webgl = {};
-
-/*
-// load: temp/nxr/scene/namespace.js
-*/
-nxr.scene.Transformation = (function() {
-  function Transformation(matrix) {
-    this.matrix = matrix;
-  }
-
-  Transformation.prototype.acceptVisitor = function(visitor) {
-    if (typeof visitor.visitTransformation === "function") {
-      visitor.visitTransformation(this);
-    }
-  };
-
-  Transformation.prototype.getMatrix4x4 = function() {
-    return this.matrix;
-  };
-
-  return Transformation;
-
-})();
-
-/*
 // load: temp/nxr/scene/namespace.js
 */
 nxr.scene.Node = (function() {
@@ -76,16 +49,158 @@ nxr.scene.Node = (function() {
 })();
 
 /*
-// load: temp/nxr/webgl/namespace.js
+// load: temp/nxr/namespace.js
+*/
+nxr.webgl = {};
+
+/*
+// load: temp/nxr/scene/namespace.js
+*/
+
+var concatVisitors;
+
+concatVisitors = function(a, b) {
+  var result;
+
+  result = new nxr.scene.Visitors;
+  result.setupVisitors = a.setupVisitors.concat(b.setupVisitors);
+  result.preRenderVisitors = a.preRenderVisitors.concat(b.preRenderVisitors);
+  result.renderVisitors = a.renderVisitors.concat(b.renderVisitors);
+  result.postRenderVisitors = a.postRenderVisitors.concat(b.postRenderVisitors);
+  result.teardownVisitors = a.teardownVisitors.concat(b.teardownVisitors);
+  return result;
+};
+
+nxr.scene.Visitors = (function() {
+  function Visitors() {
+    this.setupVisitors = [];
+    this.preRenderVisitors = [];
+    this.renderVisitors = [];
+    this.postRenderVisitors = [];
+    this.teardownVisitors = [];
+  }
+
+  Visitors.prototype.setup = function(scene) {
+    var visitor, _i, _len, _ref;
+
+    _ref = this.setupVisitors;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      visitor = _ref[_i];
+      visitor.visit(scene);
+    }
+  };
+
+  Visitors.prototype.preRender = function(scene) {
+    var visitor, _i, _len, _ref;
+
+    _ref = this.preRenderVisitors;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      visitor = _ref[_i];
+      visitor.visit(scene);
+    }
+  };
+
+  Visitors.prototype.render = function(scene) {
+    var visitor, _i, _len, _ref;
+
+    _ref = this.renderVisitors;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      visitor = _ref[_i];
+      visitor.visit(scene);
+    }
+  };
+
+  Visitors.prototype.postRender = function(scene) {
+    var visitor, _i, _len, _ref;
+
+    _ref = this.postRenderVisitors;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      visitor = _ref[_i];
+      visitor.visit(scene);
+    }
+  };
+
+  Visitors.prototype.teardown = function(scene) {
+    var visitor, _i, _len, _ref;
+
+    _ref = this.teardownVisitors;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      visitor = _ref[_i];
+      visitor.visit(scene);
+    }
+  };
+
+  return Visitors;
+
+})();
+
+/*
+// load: temp/nxr/scene/Node.js
 */
 
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-nxr.webgl.SceneVisitor = (function(_super) {
-  __extends(SceneVisitor, _super);
+nxr.scene.Scene = (function(_super) {
+  __extends(Scene, _super);
 
-  function SceneVisitor(gl) {
+  function Scene(visitors) {
+    this.visitors = visitors;
+    Scene.__super__.constructor.call(this, null);
+  }
+
+  Scene.prototype.setup = function() {
+    return this.visitors.setup(this);
+  };
+
+  Scene.prototype.render = function() {
+    this.visitors.preRender(this);
+    this.visitors.render(this);
+    return this.visitors.postRender(this);
+  };
+
+  Scene.prototype.teardown = function() {
+    return this.visitors.teardown(this);
+  };
+
+  return Scene;
+
+})(nxr.scene.Node);
+
+/*
+// load: temp/nxr/scene/namespace.js
+*/
+nxr.scene.Transformation = (function() {
+  function Transformation(matrix) {
+    this.matrix = matrix;
+  }
+
+  Transformation.prototype.acceptVisitor = function(visitor) {
+    if (typeof visitor.visitTransformation === "function") {
+      visitor.visitTransformation(this);
+    }
+  };
+
+  Transformation.prototype.getMatrix4x4 = function() {
+    return this.matrix;
+  };
+
+  return Transformation;
+
+})();
+
+/*
+// load: temp/nxr/webgl/namespace.js
+// load: temp/nxr/scene/Visitors.js
+*/
+
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+nxr.webgl.SceneVisitors = (function(_super) {
+  __extends(SceneVisitors, _super);
+
+  function SceneVisitors(gl) {
     this.gl = gl;
     this.setupVisitors = [new nxr.webgl.LoadIntoVideoMemoryVisitor(gl)];
     this.preRenderVisitors = [];
@@ -94,12 +209,13 @@ nxr.webgl.SceneVisitor = (function(_super) {
     this.teardownVisitors = [new nxr.webgl.DeleteFromVideoMemoryVisitor(gl)];
   }
 
-  return SceneVisitor;
+  return SceneVisitors;
 
-})(nxr.scene.Visitor);
+})(nxr.scene.Visitors);
 
 /*
 // load: temp/nxr/webgl/namespace.js
+// load: temp/nxr/scene/Scene.js
 */
 
 var __hasProp = {}.hasOwnProperty,
@@ -281,87 +397,6 @@ nxr.scene.XRotation = (function(_super) {
 })(nxr.scene.Transformation);
 
 /*
-// load: temp/nxr/scene/namespace.js
-*/
-
-var concatVisitors;
-
-concatVisitors = function(a, b) {
-  var result;
-
-  result = new nxr.scene.Visitors;
-  result.setupVisitors = a.setupVisitors.concat(b.setupVisitors);
-  result.preRenderVisitors = a.preRenderVisitors.concat(b.preRenderVisitors);
-  result.renderVisitors = a.renderVisitors.concat(b.renderVisitors);
-  result.postRenderVisitors = a.postRenderVisitors.concat(b.postRenderVisitors);
-  result.teardownVisitors = a.teardownVisitors.concat(b.teardownVisitors);
-  return result;
-};
-
-nxr.scene.Visitors = (function() {
-  function Visitors() {
-    this.setupVisitors = [];
-    this.preRenderVisitors = [];
-    this.renderVisitors = [];
-    this.postRenderVisitors = [];
-    this.teardownVisitors = [];
-  }
-
-  Visitors.prototype.setup = function(scene) {
-    var visitor, _i, _len, _ref;
-
-    _ref = this.setupVisitors;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      visitor = _ref[_i];
-      visitor.visit(scene);
-    }
-  };
-
-  Visitors.prototype.preRender = function(scene) {
-    var visitor, _i, _len, _ref;
-
-    _ref = this.preRenderVisitors;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      visitor = _ref[_i];
-      visitor.visit(scene);
-    }
-  };
-
-  Visitors.prototype.render = function(scene) {
-    var visitor, _i, _len, _ref;
-
-    _ref = this.renderVisitors;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      visitor = _ref[_i];
-      visitor.visit(scene);
-    }
-  };
-
-  Visitors.prototype.postRender = function(scene) {
-    var visitor, _i, _len, _ref;
-
-    _ref = this.postRenderVisitors;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      visitor = _ref[_i];
-      visitor.visit(scene);
-    }
-  };
-
-  Visitors.prototype.teardown = function(scene) {
-    var visitor, _i, _len, _ref;
-
-    _ref = this.teardownVisitors;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      visitor = _ref[_i];
-      visitor.visit(scene);
-    }
-  };
-
-  return Visitors;
-
-})();
-
-/*
 // load: temp/nxr/scene/Node.js
 */
 
@@ -391,39 +426,6 @@ nxr.scene.Sphere = (function(_super) {
   };
 
   return Sphere;
-
-})(nxr.scene.Node);
-
-/*
-// load: temp/nxr/scene/Node.js
-*/
-
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-nxr.scene.Scene = (function(_super) {
-  __extends(Scene, _super);
-
-  function Scene(visitors) {
-    this.visitors = visitors;
-    Scene.__super__.constructor.call(this, null);
-  }
-
-  Scene.prototype.setup = function() {
-    return this.visitors.setup(this);
-  };
-
-  Scene.prototype.render = function() {
-    this.visitors.preRender(this);
-    this.visitors.render(this);
-    return this.visitors.postRender(this);
-  };
-
-  Scene.prototype.teardown = function() {
-    return this.visitors.teardown(this);
-  };
-
-  return Scene;
 
 })(nxr.scene.Node);
 

@@ -1,9 +1,9 @@
 ###
-// load: temp/nxr/webgl/namespace.js, temp/nxr/scene/Visitor.js
+// load: temp/nxr/webgl/namespace.js
+// load: temp/nxr/scene/Visitors.js
 ###
-# // load: temp/nxr/scene/Visitor.js
 
-class nxr.webgl.SceneVisitor extends nxr.scene.Visitor
+class nxr.webgl.SceneVisitors extends nxr.scene.Visitors
 
 	constructor: (@gl) ->
 		@setupVisitors = [new nxr.webgl.LoadIntoVideoMemoryVisitor gl]
