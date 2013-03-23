@@ -23,7 +23,7 @@ module.exports = function(grunt) {
         // https://npmjs.org/package/grunt-contrib-coffee
         coffee: {
             options: {
-                // separator: ';\n',
+                separator: '\n\n',
                 join: true,
                 bare: true
                 // sourceMap: true
@@ -41,10 +41,15 @@ module.exports = function(grunt) {
 
         concat: {
             options: {
-                separator: ';\n\n'
+                separator: '\n\n'
             },
             dist: {
-                src: ['node_modules/gl-matrix/dist/gl-matrix.js', 'dist/nxr-only.js'],
+                src: [
+                    'node_modules/gl-matrix/dist/gl-matrix.js',
+                    'src/export-wrapper-begin.js',
+                    'dist/nxr-only.js',
+                    'src/export-wrapper-end.js'
+                ],
                 dest: 'dist/nxr-full.js'
             }
         },
