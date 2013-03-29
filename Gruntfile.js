@@ -25,8 +25,8 @@ module.exports = function(grunt) {
             options: {
                 separator: '\n\n',
                 join: true,
-                bare: true
-                // sourceMap: true
+                bare: true,
+                sourceMap: true
             },
             compile: {
                 files: {
@@ -57,8 +57,8 @@ module.exports = function(grunt) {
         uglify: {
             options: {
                 mangle: false,
-                // sourceMapIn: '',
-                sourceMap: 'dist/nxr-map.js'
+                sourceMapIn: 'dist/nxr-only.map',
+                sourceMap: 'dist/nxr-full.map'
             },
             app: {
                 files: {
