@@ -1,7 +1,5 @@
-NextRealityEngine
+grunt-setup-example
 =================
-
-A WebGL 3D Engine
 
 Tech Stack
 ----------
@@ -18,11 +16,11 @@ May be used in the future:
 Installation
 ------------
 
-	$ component install ungerik/NextRealityEngine
+	$ component install ungerik/grunt-setup-example
 or
 
-	git clone git@github.com:ungerik/NextRealityEngine.git
-	cd NextRealityEngine
+	git clone git@github.com:ungerik/grunt-setup-example.git
+	cd grunt-setup-example
 	npm install
 	grunt
 
